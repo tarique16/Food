@@ -14,10 +14,13 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.food.ui.screens.CART_ROUTE
 import com.example.food.ui.screens.CART_TITLE
 import com.example.food.ui.screens.CartScreen
@@ -50,17 +53,26 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BottomNav() {
-    val defaultTab = HOME_ROUTE
-    val selectedTab = remember { mutableStateOf(defaultTab) }
+    val navController = rememberNavController()
     Scaffold(
         bottomBar = {
+            val currentRoute =
+                navController.currentBackStackEntryAsState().value?.destination?.route
             NavigationBar(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 bottomNavItems.forEach { item ->
                     NavigationBarItem(
-                        selected = item.route == selectedTab.value,
-                        onClick = { selectedTab.value = item.route },
+                        selected = item.route == currentRoute,
+                        onClick = {
+                            navController.navigate(item.route) {
+                                launchSingleTop = true
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                restoreState = true
+                            }
+                        },
                         icon = {
                             Icon(
                                 item.icon,
@@ -78,30 +90,12 @@ fun BottomNav() {
                 .fillMaxSize()
                 .padding(contentPadding)
         ) {
-            when (selectedTab.value) {
-                HOME_ROUTE -> {
-                    HomeScreen(HOME_TITLE)
-                }
-
-                SEARCH_ROUTE -> {
-                    SearchScreen(SEARCH_TITLE)
-                }
-
-                CART_ROUTE -> {
-                    CartScreen(CART_TITLE)
-                }
-
-                ORDER_ROUTE -> {
-                    OrderScreen(ORDER_TITLE)
-                }
-
-                MORE_ROUTE -> {
-                    MoreScreen(MORE_TITLE)
-                }
-
-                else -> {
-                    HomeScreen(HOME_TITLE)
-                }
+            NavHost(navController = navController, startDestination = HOME_ROUTE) {
+                composable(HOME_ROUTE) { HomeScreen(HOME_TITLE) }
+                composable(SEARCH_ROUTE) { SearchScreen(SEARCH_TITLE) }
+                composable(CART_ROUTE) { CartScreen(CART_TITLE) }
+                composable(ORDER_ROUTE) { OrderScreen(ORDER_TITLE) }
+                composable(MORE_ROUTE) { MoreScreen(MORE_TITLE) }
             }
         }
     }
