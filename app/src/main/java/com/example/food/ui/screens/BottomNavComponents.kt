@@ -1,11 +1,16 @@
 package com.example.food.ui.screens
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Receipt
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
 
 const val HOME_TITLE: String = "Home"
@@ -22,14 +27,40 @@ const val MORE_ROUTE: String = "more"
 
 data class BottomNavItem(
     val title: String,
-    val icon: ImageVector,
-    val route: String
+    val route: String,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector
 )
 
 val bottomNavItems = listOf(
-    BottomNavItem(CART_TITLE, Icons.Filled.ShoppingCart, CART_ROUTE),
-    BottomNavItem(SEARCH_TITLE, Icons.Filled.Search, SEARCH_ROUTE),
-    BottomNavItem(HOME_TITLE, Icons.Filled.Home, HOME_ROUTE),
-    BottomNavItem(ORDER_TITLE, Icons.Filled.History, ORDER_ROUTE),
-    BottomNavItem(MORE_TITLE, Icons.Filled.MoreHoriz, MORE_ROUTE),
+    BottomNavItem(
+        title = CART_TITLE,
+        route = CART_ROUTE,
+        selectedIcon = Icons.Filled.ShoppingCart,
+        unselectedIcon = Icons.Outlined.ShoppingCart
+    ),
+    BottomNavItem(
+        title = SEARCH_TITLE,
+        route = SEARCH_ROUTE,
+        selectedIcon = Icons.Filled.Search,
+        unselectedIcon = Icons.Outlined.Search
+    ),
+    BottomNavItem(
+        title = HOME_TITLE,
+        route = HOME_ROUTE,
+        selectedIcon = Icons.Filled.Home,
+        unselectedIcon = Icons.Outlined.Home
+    ),
+    BottomNavItem(
+        title = ORDER_TITLE,
+        route = ORDER_ROUTE,
+        selectedIcon = Icons.Filled.Receipt,
+        unselectedIcon = Icons.Outlined.Receipt
+    ),
+    BottomNavItem(
+        title = MORE_TITLE,
+        route = MORE_ROUTE,
+        selectedIcon = Icons.Filled.AccountCircle,
+        unselectedIcon = Icons.Outlined.AccountCircle
+    ),
 )

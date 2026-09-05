@@ -62,8 +62,9 @@ fun BottomNav() {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 bottomNavItems.forEach { item ->
+                    val selected = item.route == currentRoute
                     NavigationBarItem(
-                        selected = item.route == currentRoute,
+                        selected = selected,
                         onClick = {
                             navController.navigate(item.route) {
                                 launchSingleTop = true
@@ -75,7 +76,7 @@ fun BottomNav() {
                         },
                         icon = {
                             Icon(
-                                item.icon,
+                                imageVector = if (selected) item.selectedIcon else item.unselectedIcon,
                                 contentDescription = item.title
                             )
                         },
